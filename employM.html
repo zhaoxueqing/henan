@@ -1,0 +1,342 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商宇后台管理</title>
+    <link rel="stylesheet" type="text/css" href="css/com.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/modernizr.min.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <script>
+        $.ajaxSetup({
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            }
+        });
+        $(function () {
+            var requirements,responsibilities;
+            var currentId ;
+            var url='http://dev-api.xue.xuegua.science';
+            var updateAction = "http://dev-api.xue.xuegua.science/jobs/update";
+            $.get(url+'/jobs',function (data) {
+                test(data, false);
+            });
+
+            $('#createJobs').submit(function () {
+                var require = this.requirement.value.replace(/(\r\n)|\n|\r/g, ' ').split(' ');
+                delete this.requirement;
+                console.log(require);
+                for(var i = 0; i < require.length; i++){
+                    this['requirement'+(i+1)].value = require[i];
+                }
+                var respon = this.responsibility.value.replace(/(\r\n)|\n|\r/g, ' ').split(' ');
+                delete this.responsibility;
+                console.log(respon);
+                for(i = 0; i < respon.length; i++){
+                    this['responsibility'+(i+1)].value = respon[i];
+                }
+                $("#createJobs").ajaxSubmit(function(data) {
+                    if(data.result){
+                        alert("添加成功");
+                        window.location = '';
+                    }
+                    else{
+                        alert("请您确认信息是否填写完毕");
+                    }
+                });
+                return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
+            });
+
+            $('#updateJobs').submit(function () {
+                this.action = updateAction + "?id=" + currentId;
+                var require = this.requirement.value.replace(/(\r\n)|\n|\r/g, ' ').split(' ');
+                delete this.requirement;
+                console.log(require);
+                for(var i = 0; i < require.length; i++){
+                    this['requirement'+(i+1)].value = require[i];
+                }
+                var respon = this.responsibility.value.replace(/(\r\n)|\n|\r/g, ' ').split(' ');
+                delete this.responsibility;
+                console.log(respon);
+                for(i = 0; i < respon.length; i++){
+                    this['responsibility'+(i+1)].value = respon[i];
+                }
+                $("#updateJobs").ajaxSubmit(function(data) {
+                    if(data.result){
+                        alert("修改成功");
+                        window.location = '';
+                    }
+                    else{
+                        alert("请您确认信息是否填写完毕");
+                    }
+                });
+                return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
+            });
+
+            function test(data, fresh){
+                var str = '';
+                if (data.result) {
+                    var jobs=data.data;
+                    for (var key in jobs) {
+                        str+='<tr class="itemTmp">';
+                        str+='<td>'+jobs[key].id+'</td>';
+                        str+='<td class="nameTmp">'+jobs[key].name+'</td>';
+                        requirements = JSON.parse(jobs[key].requirement);
+                        var requireStr = '';
+                        for(var i = 0; i< requirements.length; i++){
+                            requireStr += requirements[i]+' ';
+                        }
+                        str+='<td class="requirementTmp">'+requireStr+'</td>';
+                        responsibilities = JSON.parse(jobs[key].responsibility);
+                        var responsibilityStr = '';
+                        for(var i = 0; i< responsibilities.length; i++){
+                            responsibilityStr += responsibilities[i]+' ';
+                        }
+                        str+='<td class="responsibilityTmp">'+responsibilityStr+'</td>';
+                        str+='<td class="imgTmp">'+jobs[key].img_url+'</td>';
+                        str+='<td>';
+                        str+='<a class="link-update" id="'+jobs[key].id+'" href="#">修改</a>';
+                        str+='<a class="link-del" id="'+jobs[key].id+'" href="#">删除</a>';
+                        str+='</td>';
+                        str+='</tr>';
+                    }
+                }
+                if(!fresh){
+                    $('.result-tab').append(str);
+                }
+                else{
+                    var first = "<tr> <th>招聘ID</th> <th>职位</th> <th>要求</th> <th>职责</th> <th>图片链接</th> <th>操作</th> </tr>";
+                    $('.result-tab').html(first+str);
+                }
+                $('.result-title').click(function () {
+                    $('.add').show();
+                });
+                $('.link-update').click(function () {
+                    currentId = $(this).attr('id');
+                    var index= $(this).parents('.itemTmp ');
+                    var name=$(index).find('.nameTmp').eq(0);
+                    name = $(name).text();
+                    var req=$(index).find('.requirementTmp').eq(0);
+                    req = $(req).text();
+                    var res=$(index).find('.responsibilityTmp').eq(0);
+                    res = $(res).text();
+                    $('#name1').val(name);
+                    $('#requirements').val(req);
+                    $('#responsibilities').val(res);
+                    $('.addU').show();
+                    return false;
+                });
+                $('.link-del').click(function () {
+                    var id = $(this).attr('id');
+                    $.ajax({
+                        url: url+'/jobs?id='+id,
+                        type: "DELETE",
+                        success: function (data) {
+                            if(data.result){
+                                alert("删除成功");
+                                window.location = '';
+                            }
+                            else{
+                                alert("删除失败");
+                            }
+                        }
+                    });
+                    return false;
+                });
+                $('#flaU').click(function () {
+                    $('.addU').hide();
+                    return false;
+                });
+
+            }
+            $('#fla').click(function () {
+                $('.add').hide();
+                return false;
+            });
+
+        })
+    </script>
+</head>
+<body>
+<div class="topBackstage">
+    <img src="img/logo.png"/>
+    <ul class="nav1">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="solution.html">解决方案</a></li>
+        <li><a href="case.html">成功案例</a></li>
+        <li><a href="recruit.html">诚聘英才</a></li>
+        <li><a href="about.html">公司介绍</a></li>
+    </ul>
+</div>
+<div class="container clearfix">
+    <div class="sidebar-wrap">
+        <div class="sidebar-title">
+            <h3>商宇科技后台管理</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <li>
+                    <ul class="sub-menu">
+                        <li><a href="caseM.html">案例管理</a></li>
+                        <li><a href="informationM.html">资讯管理</a></li>
+                        <li><a href="announcementM.html">公告管理</a></li>
+                        <li><a href="employM.html">招聘管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i>首页<span class="crumb-step">&gt;</span><span class="crumb-name">招聘管理</span></div>
+        </div>
+
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title result-list"><i class="icon-font"></i>新增岗位</div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>招聘ID</th>
+                            <th>职位</th>
+                            <th>要求</th>
+                            <th>职责</th>
+                            <th>图片链接</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+<div class="add">
+    <div class="mask"></div>
+    <div class="addA">
+        <form id="createJobs" action="http://dev-api.xue.xuegua.science/jobs" method="post" enctype="multipart/form-data"  >
+            <table class="insert-tab" width="100%">
+                <tr>
+                    <th><i class="require-red">*</i>招聘图片：</th>
+                    <td><input  type="file" name="img"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>职位：</th>
+                    <td>
+                        <input class="common-text required" id="name" name="name" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>要求：</th>
+                    <td>
+                        <textarea class="common-text required" id="requirement" name="requirement"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>职责：</th>
+                    <td>
+                        <textarea class="common-text required" id="responsibility" name="responsibility" ></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="responsibility1"   id="responsibility1" />
+                        <input type="hidden" name="responsibility2"   id="responsibility2" />
+                        <input type="hidden" name="responsibility3"   id="responsibility3" />
+                        <input type="hidden" name="responsibility4"   id="responsibility4" />
+                        <input type="hidden" name="responsibility5"   id="responsibility5" />
+                        <input type="hidden" name="responsibility6"   id="responsibility6" />
+                        <input type="hidden" name="responsibility7"   id="responsibility7" />
+                        <input type="hidden" name="responsibility8"   id="responsibility8" />
+                        <input type="hidden" name="responsibility9"   id="responsibility9" />
+                        <input type="hidden" name="responsibility10"   id="responsibility10" />
+                        <input type="hidden" name="requirement1"   id="requirement1" />
+                        <input type="hidden" name="requirement2"   id="requirement2" />
+                        <input type="hidden" name="requirement3"   id="requirement3" />
+                        <input type="hidden" name="requirement4"   id="requirement4" />
+                        <input type="hidden" name="requirement5"   id="requirement5" />
+                        <input type="hidden" name="requirement6"   id="requirement6" />
+                        <input type="hidden" name="requirement7"   id="requirement7" />
+                        <input type="hidden" name="requirement8"   id="requirement8" />
+                        <input type="hidden" name="requirement9"   id="requirement9" />
+                        <input type="hidden" name="requirement10"   id="requirement10" />
+                        <input type="hidden" name="status"  id="status" value="1" />
+                    </td>
+                </tr>
+            </table>
+            <p class="btnInp">
+                <input class="btn btn-primary btn6 mr10" value="发布" type="submit"  >
+                <input class="btn btn6"  value="返回" type="button" id="fla" >
+            </p>
+        </form>
+    </div>
+</div>
+<div class="addU">
+    <div class="mask"></div>
+    <div class="addA">
+        <form id="updateJobs" action="http://dev-api.xue.xuegua.science/jobs/update" method="post" enctype="multipart/form-data"  >
+            <table class="insert-tab" width="100%">
+                <tr>
+                    <th><i class="require-red">*</i>招聘图片：</th>
+                    <td><input  type="file" name="img"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>职位：</th>
+                    <td>
+                        <input class="common-text required"  name="name" id="name1" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>要求：</th>
+                    <td>
+                        <textarea class="common-text required"  name="requirement" id="requirements"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>职责：</th>
+                    <td>
+                        <textarea class="common-text required"  name="responsibility"  id="responsibilities"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="responsibility1"   id="responsibility11" />
+                        <input type="hidden" name="responsibility2"   id="responsibility21" />
+                        <input type="hidden" name="responsibility3"   id="responsibility31" />
+                        <input type="hidden" name="responsibility4"   id="responsibility41" />
+                        <input type="hidden" name="responsibility5"   id="responsibility51" />
+                        <input type="hidden" name="responsibility6"   id="responsibility61" />
+                        <input type="hidden" name="responsibility7"   id="responsibility71" />
+                        <input type="hidden" name="responsibility8"   id="responsibility81" />
+                        <input type="hidden" name="responsibility9"   id="responsibility91" />
+                        <input type="hidden" name="responsibility10"   id="responsibility101" />
+                        <input type="hidden" name="requirement1"   id="requirement11" />
+                        <input type="hidden" name="requirement2"   id="requirement21" />
+                        <input type="hidden" name="requirement3"   id="requirement31" />
+                        <input type="hidden" name="requirement4"   id="requirement41" />
+                        <input type="hidden" name="requirement5"   id="requirement51" />
+                        <input type="hidden" name="requirement6"   id="requirement61" />
+                        <input type="hidden" name="requirement7"   id="requirement71" />
+                        <input type="hidden" name="requirement8"   id="requirement81" />
+                        <input type="hidden" name="requirement9"   id="requirement91" />
+                        <input type="hidden" name="requirement10"   id="requirement101" />
+                        <input type="hidden" name="status"  id="status1"  value="1"/>
+                    </td>
+                </tr>
+            </table>
+            <p class="btnInp">
+                <input class="btn btn-primary btn6 mr10" value="确认修改" type="submit"  >
+                <input class="btn btn6"  value="返回" type="button" id="flaU">
+            </p>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

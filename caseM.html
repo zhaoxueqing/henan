@@ -1,0 +1,293 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商宇后台管理</title>
+    <link rel="stylesheet" type="text/css" href="css/com.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/modernizr.min.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <script>
+        $.ajaxSetup({
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            }
+        });
+        $(function () {
+            var currentId ;
+            var url='http://dev-api.xue.xuegua.science';
+            var updateAction = "http://dev-api.xue.xuegua.science/cases/update";
+            $.get(url+'/cases',function (data) {
+                test(data, false);
+            });
+            
+            $('#createCases').submit(function () {
+                $("#createCases").ajaxSubmit(function(data) {
+                    if(data.result){
+                        alert("添加成功");
+                        window.location = '';
+                    }
+                    else{
+                        alert("请您确认信息是否填写完毕");
+                    }
+                });
+                return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
+            });
+
+            $('#updateCases').submit(function () {
+                this.action = updateAction + "?id=" + currentId;
+                $("#updateCases").ajaxSubmit(function(data) {
+                    if(data.result){
+                        alert("修改成功");
+                        window.location = '';
+                    }
+                    else{
+                        alert("请您确认信息是否填写完毕");
+                    }
+                });
+                return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
+            });
+
+            function test(data, fresh){
+                var str = '';
+                if (data.result) {
+                    var cases=data.data;
+                    for (var key in cases) {
+                        str+='<tr class="itemTmp">';
+                        str+='<td>'+cases[key].id+'</td>';
+                        str+='<td class="nameTmp">'+cases[key].name+'</td>';
+                        str+='<td class="tagTmp">'+cases[key].tag+'</td>';
+                        str+='<td class="imgTmp">'+cases[key].img_url+'</td>';
+                        str+='<td>';
+                        str+='<a class="link-update" id="'+cases[key].id+'" href="#">修改</a>';
+                        str+='<a class="link-del" id="'+cases[key].id+'" href="#">删除</a>';
+                        str+='</td>';
+                        str+='</tr>';
+                    }
+                }
+                if(!fresh){
+                    $('.result-tab').append(str);
+                }
+                else{
+                    var first = '<tr><th>公告ID</th><th>公告标题</th><th>公告内容</th><th>操作</th></tr>'
+                    $('.result-tab').html(first+str);
+                }
+                $('.result-title').click(function () {
+                    $('.add').show();
+                });
+                $('.link-update').click(function () {
+                    currentId = $(this).attr('id');
+                    var index= $(this).parents('.itemTmp ');
+                    var name=$(index).find('.nameTmp').eq(0);
+                    name = $(name).text();
+                    var tag = $(index).find('.tagTmp').eq(0);
+                    tag = $(tag).text();
+                    $('#name1').val(name);
+                    $('#tag1').val(tag);
+                    $('.addU').show();
+                    return false;
+                });
+                $('.link-del').click(function () {
+                    var id = $(this).attr('id');
+                    $.ajax({
+                        url: url+'/cases?id='+id,
+                        type: "DELETE",
+                        success: function (data) {
+                            if(data.result){
+                                alert("删除成功");
+                                window.location = '';
+                            }
+                            else{
+                                alert("删除失败");
+                            }
+                        }
+                    });
+                    return false;
+                });
+                $('#flaU').click(function () {
+                    $('.addU').hide();
+                    return false;
+                });
+                $('#sucU').click(function () {
+                    var myData1 = {};
+                    myData1.id = $('#id1').val();
+                    myData1.titel = $('#title1').val();
+                    myData1.content = $('#content1').val();
+                    myData1.thumd_url = '';
+                    myData1.status = 1;
+                    $.ajax({
+                        url: url+'/cases',
+                        type: "PUT",
+                        data: myData1,
+                        success: function (data) {
+                            if(data.result){
+                                alert('更新成功');
+                                window.location = '';
+                            }
+                            else{
+                                alert('更新失败');
+                            }
+                            $('.addU').hide();
+                            return false;
+                        }
+                    });
+                });
+
+            }
+            $('#suc').click(function () {
+                var myData = {};
+                myData.titel = $('#title').val();
+                myData.thumd_url = '';
+                myData.status = 1;
+                myData.content = $('#content').val();
+                $.post(url+'/cases',myData,function (data) {
+                    if(data.result){
+                        window.location = '';
+                        return false;
+                    }
+                });
+                $('.link-update').click(function () {
+                    $('.add').show();
+                    return false;
+                });
+
+            });
+            $('#fla').click(function () {
+                $('.add').hide();
+                return false;
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="topBackstage">
+    <img src="img/logo.png"/>
+    <ul class="nav1">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="solution.html">解决方案</a></li>
+        <li><a href="case.html">成功案例</a></li>
+        <li><a href="recruit.html">诚聘英才</a></li>
+        <li><a href="about.html">公司介绍</a></li>
+    </ul>
+</div>
+<div class="container clearfix">
+    <div class="sidebar-wrap">
+        <div class="sidebar-title">
+            <h3>商宇科技后台管理</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <li>
+                    <ul class="sub-menu">
+                        <li><a href="caseM.html">案例管理</a></li>
+                        <li><a href="informationM.html">资讯管理</a></li>
+                        <li><a href="announcementM.html">公告管理</a></li>
+                        <li><a href="employM.html">招聘管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i>首页<span class="crumb-step">&gt;</span><span class="crumb-name">公告管理</span></div>
+        </div>
+
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title result-list"><i class="icon-font"></i>新增案例</div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>案例ID</th>
+                            <th>案例标题</th>
+                            <th>案例内容</th>
+                            <th>图片链接</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+<div class="add">
+    <div class="mask"></div>
+    <div class="addA">
+        <form id="createCases" action="http://dev-api.xue.xuegua.science/cases" method="post" enctype="multipart/form-data"  >
+            <table class="insert-tab" width="100%">
+                <tr>
+                    <th><i class="require-red">*</i>案例图片：</th>
+                    <td><input  type="file" name="img"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>案例标题：</th>
+                    <td>
+                        <input class="common-text required" id="name" name="name" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>案例类别：</th>
+                    <td>
+                        <input class="common-text required" id="tag" name="tag" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="description"   id="description" />
+                        <input type="hidden" name="status"  id="status" value="1"/>
+                    </td>
+                </tr>
+            </table>
+            <p class="btnInp">
+                <input class="btn btn-primary btn6 mr10" value="发布" type="submit"  >
+                <input class="btn btn6"  value="返回" type="button" id="fla" >
+            </p>
+        </form>
+    </div>
+</div>
+<div class="addU">
+    <div class="mask"></div>
+    <div class="addA">
+        <form id="updateCases" action="http://dev-api.xue.xuegua.science/cases/update" method="post" enctype="multipart/form-data"  >
+            <table class="insert-tab" width="100%">
+                <tr>
+                    <th><i class="require-red">*</i>案例图片：</th>
+                    <td><input  type="file" name="img"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>案例标题：</th>
+                    <td>
+                        <input class="common-text required" id="name1" name="name" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require-red">*</i>案例类别：</th>
+                    <td>
+                        <input class="common-text required" id="tag1" name="tag" size="50" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="description"   id="description1" value="" />
+                        <input type="hidden" name="status"  id="status1" value="1"/>
+                    </td>
+                </tr>
+            </table>
+            <p class="btnInp">
+                <input class="btn btn-primary btn6 mr10" value="确认修改" type="submit"  >
+                <input class="btn btn6"  value="返回" type="button" id="flaU">
+            </p>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

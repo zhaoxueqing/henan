@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商宇后台管理</title>
+     <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/use-center.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(function () {
+
+            $.ajaxSetup({
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
+
+            var url='http://dev-api.xue.xuegua.science';
+            $('#log').click(function () {
+                var user={};
+                user.name=$('#name').val();
+                user.password=$('#password').val();
+                $.post(url+'/login',user,function (data) {
+                    if(data.result){
+                        window.location='caseM.html';
+                        return false;
+                    }
+                    else{
+                        alert('请您输入正确的用户名和密码');
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="content">
+    <div class="signup">
+        <img src="img/logo.png" class="lo_go"/>
+        <h2>登录</h2>
+        <div class="singup-info">
+            <form class="clear">
+                <div class="users">
+                    <p>用&nbsp;户&nbsp;&nbsp;名： <input type="text" class="text" value="用户名" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '用户名';}" id="name"/></p>
+                    <p>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码： <input type="password" class="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" id="password"/></p>
+                </div>
+            </form>
+            <div class="clear">
+                <input type="submit" value="立即登录" class="lo-btn" id="log">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

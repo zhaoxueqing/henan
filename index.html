@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<title>河南商宇科技</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/style.css">
+
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script>
+
+   $(function () {
+       var url = 'http://dev-api.xue.xuegua.science';
+       $.get(url + '/news?type=news&page=1&size=10', function (data) {
+           var str = '';
+           if (data.result) {
+               var news = data.data;
+               for (var key in news) {
+                   var timestamp = news[key].created_at;
+                   var date = new Date(parseInt(timestamp) * 1000);
+                   var date_str = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                   str += '<li><a href="#">' + news[key].titel + '</a><span>' + date_str + '</span> </li>'
+               }
+           }
+           $('.new-news').html(str);
+       });
+
+       $.get(url + '/cases', function (data) {
+           var str = '';
+           if (data.result) {
+               var cases= data.data;
+               for (var key in cases) {
+                   str += ' <li>';
+                   str += '<a href="#"><img src="http://'+cases[key].img_url+'" alt="" width="280" height="250"/></a>';
+                   str += '<h3><a href="#">'+cases[key].name+'</a></h3>';
+                   str += '<span><a href="#">'+cases[key].tag+'</a></span>';
+                   str += '<span class="caseShowSR"><a href="#"><img src="img/eye.png"/>'+cases[key].reviews+'</a></span>';
+                   str += '</li>';
+               }
+           }
+           $('#caseShowLi').html(str);
+       });
+//       $.get(url+'/img',function (data) {
+//           var str='';
+//           if(data.result){
+//               var carousel=data.imgs;
+//               for (key in carousel){
+//                   str+='<li><a href="#" target="_blank"><img src="http://'+carousel[key]+'" width="100%" height="500px" alt=""/></a></li>'
+//               }
+//           }
+//           $('#carousel').html(str);
+           jQuery(".focusBox").slide({ mainCell:".pic",effect:"left", autoPlay:true, delayTime:300});
+           jQuery(".focusBox1").slide({ mainCell:".pic1",effect:"left", autoPlay:true, delayTime:300});
+      // });
+
+       var oLi = $('#backg li');
+       for (var i = 0; i < oLi.length; i++) {
+           $(oLi[i]).mouseover(function () {
+               this.style.background = '#fbb90b';
+               this.style.color = '#ffffff';
+           });
+           $(oLi[i]).mouseout(function () {
+               this.style.background = '#ffffff';
+               this.style.color = '#323232';
+           });
+       }
+
+       var aLi = $('#ula li');
+       for (var i = 0; i < aLi.length; i++) {
+           $(aLi[i]).mouseover (function () {
+               this.getElementsByTagName('div')[0].style.display = 'block';
+           });
+           $(aLi[i]).mouseout (function () {
+               this.getElementsByTagName('div')[0].style.display = 'none';
+           });
+       }
+
+       $('.new-News').click(function () {
+           $('.web-News').removeClass('active');
+           $('.new-News').addClass('active');
+           $.get(url + '/news?type=news&page=1&size=10', function (data) {
+               var str = processNews(data);
+               $('.web-news').hide();
+               $('.new-news').html(str);
+               $('.new-news').show();
+           });
+           return false;
+       });
+
+       function processNews(data) {
+           var str = '';
+           if (data.result) {
+               var news = data.data;
+               for (var key in news) {
+                   var timestamp = news[key].created_at;
+                   var date = new Date(parseInt(timestamp) * 1000);
+                   var date_str = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                   str += '<li><a href="#">' + news[key].titel + '</a><span>' + date_str + '</span> </li>'
+               }
+           }
+           return str;
+       }
+
+       $('.web-News').click(function () {
+           $('.new-News').removeClass('active');
+           $('.web-News').addClass('active');
+           $.get(url + '/news?type=announcement&page=1&size=10', function (data) {
+               var str = processNews(data);
+               $('.new-news').hide();
+               $('.web-news').html(str);
+               $('.web-news').show();
+           });
+           return false;
+       });
+   });
+
+
+   </script>
+</head>
+
+<body>
+   <div id="top">
+        <div class="content1">
+           <img src="img/logo.png"/>
+           <ul class="nav">
+              <li><a href="index.html" class="Aactive">首页</a></li>
+              <li><a href="solution.html">解决方案</a></li>
+              <li><a href="case.html">成功案例</a></li>
+              <li><a href="recruit.html">诚聘英才</a></li>
+              <li><a href="about.html">公司介绍</a></li>
+           </ul>
+           <ul class="navR">
+              <li class="navService">服务热线：</li>
+              <li class="navPhone">0371-56750099</li>
+           </ul>
+        </div>
+   </div>
+   <div class="focusBox">
+        <ul class="pic" id="carousel">
+            <li><a href="#" target="_blank"><img src="img/banner01.jpg" width="100%" height="500px" alt=""/></a></li>
+            <li><a href="#" target="_blank"><img src="img/banner02.jpg" width="100%" height="500px" alt=""/></a></li>
+            <li><a href="#" target="_blank"><img src="img/banner03.jpg" width="100%" height="500px" alt=""/></a></li>
+         </ul>
+            <a class="prev" href="javascript:void(0)"></a>
+            <a class="next" href="javascript:void(0)"></a>
+   </div>
+ 
+    <ul class="clear content navList" id="ula">
+       <li class="navList1">
+             <p class="navListP1"><a href="#"><img src="img/kf01-g.png"/></a></p> 
+             <p class="navListP2"><a href="#"><img src="img/appkf1.png"/></a></p>
+             <p class="navListP3"><a href="#" >APP development</a></p>
+             <p class="navListP4"><a href="#" >专业APP软件定制开发商，适用商城，医疗，服装，物流等各个行业</a></p>
+             <div class="navListL">
+                 <p class="navListP1"><a href="#"><img src="img/kf01-w.png"/></a></p> 
+                 <p class="navListP2"><a href="#"><img src="img/appkf.png"/></a></p>
+                 <p class="navListP3"><a href="#" style="color:#ffffff">APP development</a></p>
+                 <p class="navListP4"><a href="#" style="color:#ffffff">专业APP软件定制开发商，适用商城，医疗，服装，物流等各个行业</a></p>
+             </div>
+       </li>
+        <li class="navList1">
+             <p class="navListP1"><a href="#"><img src="img/kf02.png"/></a></p> 
+             <p class="navListP2"><a href="#"><img src="img/wxxkf.png"/></a></p>
+             <p class="navListP3"><a href="#">chat development</a></p>
+             <p class="navListP4"><a href="#">微信公众平台二次开发，微信营销平台开发，微信高级接口对接</a></p>
+             <div class="navListL">
+                 <p class="navListP1"><a href="#"><img src="img/kf02-w.png"/></a></p> 
+                 <p class="navListP2"><a href="#"><img src="img/wxxkf2.png"/></a></p>
+                 <p class="navListP3"><a href="#" style="color:#ffffff">chat development</a></p>
+                 <p class="navListP4"><a href="#" style="color:#ffffff">微信公众平台二次开发，微信营销平台开发，微信高级接口对接</a></p>
+             </div>
+        </li>
+        <li class="navList1">
+             <p class="navListP1"><a href="#"><img src="img/kf03-g.png"/></a></p> 
+             <p class="navListP2"><a href="#"><img src="img/rjkf.png"/></a></p>
+             <p class="navListP3"><a href="#">software development</a></p>
+             <p class="navListP4"><a href="#">企业管理软件开发，行业软件平台建设，专业软件服务提供商</a></p>
+             <div class="navListL">
+                 <p class="navListP1"><a href="#"><img src="img/kf03-W.png"/></a></p> 
+                 <p class="navListP2"><a href="#"><img src="img/rjkf2.png"/></a></p>
+                 <p class="navListP3"><a href="#" style="color:#ffffff">software development</a></p>
+                 <p class="navListP4"><a href="#" style="color:#ffffff">企业管理软件开发，行业软件平台建设，专业软件服务提供商</a></p>
+             </div>
+        </li>
+        <li class="navList1" style="margin-right: 0;">
+             <p class="navListP1"><a href="#"><img src="img/kf04-g.png"/></a></p> 
+             <p class="navListP2"><a href="#"><img src="img/wzkf.png"/></a></p>
+             <p class="navListP3"><a href="#">Website development</a></p>
+             <p class="navListP4"><a href="#">品牌网站，企业官网、电子商务网站建设及WAP手机网站开发</a></p>
+             <div class="navListL">
+                 <p class="navListP1"><a href="#"><img src="img/kf04-W.png"/></a></p> 
+                 <p class="navListP2"><a href="#"><img src="img/wzkf2.png"/></a></p>
+                 <p class="navListP3"><a href="#" style="color:#ffffff">Website development</a></p>
+                 <p class="navListP4"><a href="#" style="color:#ffffff">品牌网站，企业官网、电子商务网站建设及WAP手机网站开发</a></p>
+             </div>
+        </li>
+    </ul>
+    
+    <div class="caseShow">
+        <div class="content">
+            <div class="caseShowImg">
+               <img src="img/caseshow.png"/>
+               <p>商城、APP等超过100个成功案例</p>
+            </div>
+            <ul class="caseShowLi clear" id="caseShowLi"></ul>
+        </div>
+    </div>
+    <div class="contactUs">
+        <div class="content">
+            <div class="contactUsL">
+                <h1>商宇科技</h1>
+                <p>河南商宇科技有限公司专注于APP开发、微信开发、软件开发、网站开发，以及多操作系统多平台应用，为您私人订制互联网平台</p>
+                <button type="button">联系我们</button>
+            </div>
+            <div class="contactUsR">
+                 <ul>
+                     <li>
+                        <img src="img/7+.png" alt=""/>
+                        <h3>超过五个年头专注开发</h3>
+                     </li>
+                     <li>
+                        <img src="img/30+.png" alt=""/>
+                        <h3>超过30个技术开发人员</h3>
+                     </li>
+                     <li>
+                        <img src="img/100+.png" alt=""/>
+                        <h3>超过100个开发项目</h3>
+                     </li>
+                 </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+         <div class="allianceAdvantage">
+         <img src="img/jmys.png"/>
+         <p class="pp">我们不仅仅为您定制APP，还可助您增加下载数量，为您的企业带来海量的用户，这就是河南商宇的不同</p>
+         <ul class="alAd clear" id="backg">
+             <li>
+                 <img src="img/jm01.png"/>
+                 <h1>1</h1>
+                 <p>送代理OEM版网站和OEM版平台</p>
+             </li>
+             <li>
+                 <h1>2</h1>
+                 <p>送物资物料，助代理商轻装上阵</p>
+                 <img src="img/jm02.png"/>
+             </li>
+             <li>
+                 <img src="img/jm03.png"/>
+                 <h1>3</h1>
+                 <p>培训支持，助代理商会议营销</p>
+             </li>
+             <li>
+                 <h1>4</h1>
+                 <p>奖励方案，返当地百度推广费用</p>
+                 <img src="img/jm04.png" />
+             </li>
+             <li>
+                 <img src="img/jm05.png"/>
+                 <h1>5</h1>
+                 <p>共享未来，携手上市</p>
+             </li>
+         </ul>
+         </div>
+         
+         <div class="news clear">
+             <img src="img/news_bt.png"/>
+             <p>为您提供互联网行业最新的新闻动态</p>
+             <div class="newsL">
+                 <p class="newsI">
+                     <a href="javascript:;" class="new-News active">最新资讯</a>
+                     <a href="javascript:;" class="web-News">网站公告</a>
+                 </p>
+                 <ul class="new-news"></ul>
+                 <ul class="web-news" style="display: none;"></ul>
+             </div>
+            <div class="newsR" >
+                <div id="newsR">
+                    <img src="img/pic.png"/>
+                    <strong id="pre"> < </strong>
+                    <strong id="next"> > </strong>
+                    <span></span>
+                    <p></p>
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+  <div class="footer">
+       <div class="content clear">
+            <div class="footerL">
+                <h1>联系我们</h1>
+                <p>
+                   <img src="img/tel.png" style="position:relative; top:5px;"/>
+                   <span>电话：0371-56750099</span>
+                </p>
+                <p>
+                   <img src="img/mail.png" style="position:relative; top:5px;"/>
+                   <span>邮箱：shangyukeji@126.com</span>
+                </p>
+                <p>
+                   <img src="img/address.png"/>
+                   <span>地址：河南省郑州市金水区经三路32号财富广场5号楼16层A户</span>
+                </p>
+            </div>
+            <div class="footerR">
+                <h1>关于我们</h1>
+                <div class="wei">
+                    <p>
+                       <img src="img/weibo.png"/>
+                       <span>商宇科技</span>
+                    </p>
+                    <p>
+                       <img src="img/wechat.png"/>
+                       <span>扫描立即加入我们</span>
+                    </p>
+                </div>
+                <div class="yanzm">
+                     <img src="img/ewm.png" style="margin-right:26px;"/>
+                     <img src="img/ewm.png"/>
+                </div>
+            </div>
+       </div> 
+  </div>
+  <div class="foot">
+       <p>
+           <span>首页</span>
+           <span>解决方案</span>
+           <span>成功案例</span>
+           <span>诚聘英才</span>
+           <span>公司介绍</span>
+       </p>
+       <p style="padding-bottom:30px;">Copyright @ 2014-2015 河南商宇科技有限公司  豫ICP备09017896号-1</p>
+  </div>
+ 
+
+  <script type="text/javascript" src="js/jquery.SuperSlide.2.1.js"></script>
+  <script type="text/javascript" src="js/tab.js"></script>
+  <script>
+    $(function(){
+        $("#nav ul li").click(function(){
+          $(this).addClass("active").siblings("li").removeClass("active");
+        })
+    })
+  </script>
+
+
+   <script>
+       window.onload=function () {
+           var oDiv=document.getElementById('newsR');
+           var oImg=oDiv.getElementsByTagName('img')[0];
+           var oP=oDiv.getElementsByTagName('p')[0];
+           var oSpan=oDiv.getElementsByTagName('span')[0];
+           var oUl=oDiv.getElementsByTagName('ul')[0];
+           var arrImg=['img/pic.png','img/2.jpg','img/3.jpg','img/4.jpg'];
+           var arrP=['这是一','这是二','这是三','这是四'];
+           var aLi=oUl.getElementsByTagName('li');
+           var aPre=document.getElementById('pre');
+           var aNext=document.getElementById('next');
+           var num=0;
+
+           var oldLi=null;
+
+           for(var i=0;i<arrImg.length;i++){
+               oUl.innerHTML+='<li></li>';
+           }
+           oldLi=aLi[num];
+           //aLi[num]='active';
+           oldLi.className='active';
+
+           for(var i=0;i<aLi.length;i++){
+               aLi[i].index=i;
+               aLi[i].onmousemove=function () {
+                   num=this.index;
+                 //  this.innerHTML='<img src="img/'+(num+1)+'.jpg"  style="position:absolute;top: -60px;left: -35px; width: 80px;height: 56px;"/>'
+                   this.innerHTML='<img src="'+arrImg[num]+'"  style="position:absolute;top: -60px;left: -35px; width: 80px;height: 56px;"/>'
+               };
+               aLi[i].onmouseout=function () {
+                   this.innerHTML=''
+               };
+           }
+
+
+
+           function tab() {
+               oImg.src=arrImg[num];
+               oP.innerHTML=arrP[num];
+               oSpan.innerHTML=num+1+'/'+arrImg.length;
+
+
+//				for (var i=0;i<aLi.length;i++){
+//					aLi[i].className='';
+//				}
+//				aLi[num].className='active';
+           }
+           tab();
+
+           aNext.onclick=function () {
+               if (num<arrImg.length-1){
+                   num++;
+               }else {
+                   num=0;
+               }
+               tab();
+               for(var i=0;i<aLi.length;i++){
+                   aLi[i].className='';
+               }
+               aLi[num].className = 'active';
+           };
+
+           aPre.onclick=function () {
+               if (num>0){
+                   num--;
+               }else {
+                   num=arrImg.length-1;
+               }
+               tab();
+               for(var i=0;i<aLi.length;i++){
+                   aLi[i].className='';
+               }
+               aLi[num].className = 'active';
+           };
+
+           for(var i=0;i<aLi.length;i++){
+               aLi[i].index=i;
+
+               aLi[i].onclick=function () {
+//					oldLi.className = '';
+//					oldLi = this;
+//					this.className = 'active';
+
+                   for(var i=0;i<aLi.length;i++){
+                       aLi[i].className='';
+                   }
+                   aLi[num].className = 'active';
+
+                   num=this.index;
+                   tab();
+               }
+           }
+
+
+
+       }
+   </script>
+</body>
+</html>

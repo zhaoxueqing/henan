@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商宇后台管理</title>
+     <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/use-center.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(function () {
+            var url='http://dev-api.xue.xuegua.science';
+            $('#reg').click(function () {
+                var user={};
+                user.name=$('#name').val();
+                user.password=$('#password').val();
+                var res=$('#res').val();
+                if(user.password.length<6){
+                    alert('请输入六位以上密码！');
+                    return false;
+                }
+                if(res==user.password){
+                    $.post(url+'/users',user,function (data) {
+                        if(data.result){
+                            alert('注册成功！');
+                            window.location='login.html';
+                            return false;
+                        }
+                        else{
+                            alert('用户名已存在');
+                        }
+                    })
+                }else {
+                    alert('请您两次输入相同的密码');
+                }
+
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="content">
+    <div class="signup">
+        <img src="img/logo.png" class="lo_go"/>
+        <h2>注册</h2>
+        <div class="singup-info">
+            <form class="clear">
+                  <div class="users">
+                   <p>用&nbsp;户&nbsp;&nbsp;名： <input type="text" class="text" value="用户名" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '用户名';}" id="name"/></p>
+                   <p>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码： <input type="password" class="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" id="password"/></p>
+                   <p>重复密码：<input type="password" value="" class="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" id="res"/>
+                  </div>
+            </form>
+            <div class="clear">
+                <input type="submit" value="注册" class="register-btn" id="reg">
+                <p class="goP">已有账户?&nbsp;<a href="login.html">去登陆</a></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

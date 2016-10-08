@@ -1,0 +1,258 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商宇后台管理</title>
+    <link rel="stylesheet" type="text/css" href="css/com.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/modernizr.min.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(function () {
+            $.ajaxSetup({
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
+            var url='http://dev-api.xue.xuegua.science';
+            $.get(url+'/news?type=announcement&page=1&size=100',function (data) {
+                test(data, false);
+            });
+            function test(data, fresh){
+                    var str = '';
+                    if (data.result) {
+                        var announcement=data.data;
+                        for (var key in announcement) {
+                            str+='<tr class="itemTmp">';
+                            str+='<td>'+announcement[key].id+'</td>';
+                            str+='<td class="titleTmp">'+announcement[key].titel+'</td>';
+                            str+='<td class="contentTmp">'+announcement[key].content+'</td>';
+                            str+='<td>';
+                            str+='<a class="link-update" id="'+announcement[key].id+'" href="#">修改</a>';
+                            str+='<a class="link-del" id="'+announcement[key].id+'" href="#">删除</a>';
+                            str+='</td>';
+                            str+='</tr>';
+                        }
+                    }
+                    if(!fresh){
+                        $('.result-tab').append(str);
+                    }
+                    else{
+                        var first = '<tr><th>公告ID</th><th>公告标题</th><th>公告内容</th><th>操作</th></tr>'
+                        $('.result-tab').html(first+str);
+                    }
+                    $('.result-title').click(function () {
+                        $('.add').show();
+                    });
+                    $('.link-update').click(function () {
+                        $('#id1').val($(this).attr('id'));
+                        var index= $(this).parents('.itemTmp ');
+                        var title=$(index).find('.titleTmp').eq(0);
+                        title = $(title).text();
+                        var content = $(index).find('.contentTmp').eq(0);
+                        content = $(content).text();
+                        $('#title1').val(title);
+                        $('#content1').val(content);
+                        $('.addU').show();
+                        return false;
+                    });
+                    $('.link-del').click(function () {
+                        var id = $(this).attr('id');
+                        $.ajax({
+                            url: url+'/news?id='+id,
+                            type: "DELETE",
+                            success: function (data) {
+                                if(data.result){
+                                    alert("删除成功");
+                                    window.location = '';
+                                }
+                                else{
+                                    alert("删除失败");
+                                }
+                            }
+                        });
+                        return false;
+                    });
+                    $('#flaU').click(function () {
+                        $('.addU').hide();
+                        return false;
+                    });
+                    $('#sucU').click(function () {
+                        var myData1 = {};
+                        myData1.id = $('#id1').val();
+                        myData1.titel = $('#title1').val();
+                        myData1.content = $('#content1').val();
+                        myData1.type = 'announcement';
+                        myData1.thumd_url = '';
+                        myData1.status = 1;
+                        $.ajax({
+                            url: url+'/news',
+                            type: "PUT",
+                            data: myData1,
+                            success: function (data) {
+                                if(data.result){
+                                    alert('修改成功');
+                                    window.location = '';
+                                }
+                                else{
+                                    alert('请您确认信息是否填写完毕');
+                                }
+                                $('.addU').hide();
+                                return false;
+                            }
+                        });
+                    });
+
+            }
+            $('#suc').click(function () {
+                var myData = {};
+                myData.titel = $('#title').val();
+                myData.thumd_url = '';
+                myData.status = 1;
+                myData.content = $('#content').val();
+                myData.type='announcement';
+                $.post(url+'/news?type=announcement&page=1&size=10',myData,function (data) {
+                    if(data.result){
+                        alert('添加成功');
+                        window.location = '';
+                        return false;
+                    }else {
+                        alert('请您确认信息是否填写完毕');
+                    }
+                });
+                $('.link-update').click(function () {
+                    $('.add').show();
+                    return false;
+                });
+
+            });
+            $('#fla').click(function () {
+                $('.add').hide();
+                return false;
+            });
+            $('#annS').click(function () {
+               var annTitle =$('#annTitle').val();
+                $.get(url+'/news/search?type=announcement&titel='+annTitle,function (data){
+                    test(data, true);
+                });
+                return false;
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="topBackstage">
+    <img src="img/logo.png"/>
+    <ul class="nav1">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="solution.html">解决方案</a></li>
+        <li><a href="case.html">成功案例</a></li>
+        <li><a href="recruit.html">诚聘英才</a></li>
+        <li><a href="about.html">公司介绍</a></li>
+    </ul>
+</div>
+<div class="container clearfix">
+    <div class="sidebar-wrap">
+        <div class="sidebar-title">
+            <h3>商宇科技后台管理</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <li>
+                    <ul class="sub-menu">
+                        <li><a href="caseM.html">案例管理</a></li>
+                        <li><a href="informationM.html">资讯管理</a></li>
+                        <li><a href="announcementM.html">公告管理</a></li>
+                        <li><a href="employM.html">招聘管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i>首页<span class="crumb-step">&gt;</span><span class="crumb-name">公告管理</span></div>
+        </div>
+        <div class="search-wrap">
+            <div class="search-content">
+                <form action="#" method="post">
+                    <table class="search-tab">
+                        <tr>
+                            <th width="70">关键字:</th>
+                            <td><input class="common-text" placeholder="关键字" name="keywords" value="" id="annTitle" type="text"></td>
+                            <td><input class="btn btn-primary btn2" name="sub" value="查询" type="submit" id="annS"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title result-list"><i class="icon-font"></i>新增公告</div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>公告ID</th>
+                            <th>公告标题</th>
+                            <th>公告内容</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+<div class="add">
+    <div class="mask"></div>
+    <div class="addA">
+        <table class="insert-tab" width="100%">
+            <tr>
+                <th><i class="require-red">*</i>公告标题：</th>
+                <td>
+                    <input class="common-text required" id="title" name="title" size="50" value="" type="text">
+                </td>
+            </tr>
+            <tr>
+                <th>公告内容：</th>
+                <td><textarea name="content" class="common-textarea" id="content" cols="30" style="width: 98%;" rows="10"></textarea></td>
+            </tr>
+        </table>
+        <p class="btnInp">
+            <input class="btn btn-primary btn6 mr10" value="发布" type="submit" id="suc">
+            <input class="btn btn6"  value="返回" type="button" id="fla">
+        </p>
+
+    </div>
+</div>
+<div class="addU">
+    <div class="mask"></div>
+    <div class="addA">
+        <table class="insert-tab" width="100%">
+            <tr>
+                <th><i class="require-red">*</i>公告标题：</th>
+                <td>
+                    <input  id="id1" size="50" value="" type="hidden">
+                    <input class="common-text required" name="title" id="title1" size="50" value="" type="text">
+                </td>
+            </tr>
+            <tr>
+                <th>公告内容：</th>
+                <td><textarea name="content" class="common-textarea"  cols="30" id="content1" style="width: 98%;" rows="10"></textarea></td>
+            </tr>
+        </table>
+        <p class="btnInp">
+            <input class="btn btn-primary btn6 mr10" value="确定修改" type="submit" id="sucU">
+            <input class="btn btn6"  value="返回" type="button" id="flaU">
+        </p>
+
+    </div>
+</div>
+</body>
+</html>

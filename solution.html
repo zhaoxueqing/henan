@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<title>河南商宇科技</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-1.9.1.min.js"></script>
+ <script>
+		$(function(){
+            var aLi = $('#pop li');
+
+            for(var i=0;i<aLi.length;i++){
+                $(aLi[i]).mouseover(function(){
+                   $(this).children('div').eq(0).show();
+                });
+               $(aLi[i]).mouseout(function(){
+                   $(this).children('div').eq(0).hide();
+                })
+            }
+
+		});
+ </script>
+</head>
+
+<body>
+    <div id="top">
+        <div class="content1">
+            <img src="img/logo.png"/>
+            <ul class="nav">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="solution.html" class="Aactive">解决方案</a></li>
+                <li><a href="case.html">成功案例</a></li>
+                <li><a href="recruit.html">诚聘英才</a></li>
+                <li><a href="about.html">公司介绍</a></li>
+            </ul>
+            <ul class="navR">
+                <li class="navService">服务热线：</li>
+                <li class="navPhone">0371-56750099</li>
+            </ul>
+        </div>
+    </div>
+    <div class="top_img"><img src="img/jiej.png" width="100%" height="500px"/></div>
+    <div class="content">
+          <h1 class="soloS">解决方案</h1>
+         <p class="wayp">经过多年累积，科匠（中国）陆续推出电子商务、生活服务、智慧旅游、远程医疗、掌上地产、移动酒店、电子政务、游戏娱乐、电子杂志等移动解决方案，为各行业企业向移动互联网转型翻开了崭新的一页。</p>
+         <ul class="wayUl clear" id="pop">
+              <li>
+                  <a href="#"><img src="img/j1.png"/></a>
+                  <div class="popup1">
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j2.png"/></a>
+                  <div class="popup2">
+                      <p class="hp">通信</p>
+                      <p class="pw">Communication</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j3.png"/></a>
+                  <div class="popup3">
+                      <p class="hp">建材</p>
+                      <p class="pw">Building materials</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j4.png"/></a>
+                  <div class="popup4">
+                      <p class="hp">教育</p>
+                      <p class="pw">Education</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j5.png"/></a>
+                  <div class="popup5">
+                      <p class="hp">餐饮</p>
+                      <p class="pw">Catering</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j6.png"/></a>
+                  <div class="popup6">
+                      <p class="hp">房地产</p>
+                      <p class="pw">Property</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j7.png"/></a>
+                  <div class="popup7">
+                      <p class="hp">生鲜</p>
+                      <p class="pw">Fresh</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j8.png"/></a>
+                  <div class="popup8">
+                      <p class="hp">医疗</p>
+                      <p class="pw">Medical treatment</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j9.png"/></a>
+                  <div class="popup9">
+                      <p class="hp">商场</p>
+                      <p class="pw">Market</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j10.png"/></a>
+                  <div class="popup10">
+                      <p class="hp">母婴</p>
+                      <p class="pw">infant&mom</p>
+                  </div>
+              </li>
+              <li>
+                  <a href="#"><img src="img/j11.png"/></a>
+                  <div class="popup11">
+                      <p class="hp">服装</p>
+                      <p class="pw">Costume</p>
+                  </div>
+              </li>
+         </ul>
+    </div>
+  <div class="footer">
+       <div class="content clear">
+            <div class="footerL">
+                <h1>联系我们</h1>
+                <p>
+                   <img src="img/tel.png" style="position:relative; top:5px;"/>
+                   <span>电话：0371-56750099</span>
+                </p>
+                <p>
+                   <img src="img/mail.png" style="position:relative; top:5px;"/>
+                   <span>邮箱：shangyukeji@126.com</span>
+                </p>
+                <p>
+                   <img src="img/address.png"/>
+                   <span>地址：河南省郑州市金水区经三路32号财富广场5号楼16层A户</span>
+                </p>
+            </div>
+            <div class="footerR">
+                <h1>关于我们</h1>
+                <div class="wei">
+                    <p>
+                       <img src="img/weibo.png"/>
+                       <span>商宇科技</span>
+                    </p>
+                    <p>
+                       <img src="img/wechat.png"/>
+                       <span>扫描立即加入我们</span>
+                    </p>
+                </div>
+                <div class="yanzm">
+                     <img src="img/ewm.png" style="margin-right:26px;"/>
+                     <img src="img/ewm.png"/>
+                </div>
+            </div>
+       </div> 
+  </div>
+  <div class="foot">
+       <p>
+           <span>首页</span>
+           <span>解决方案</span>
+           <span>成功案例</span>
+           <span>诚聘英才</span>
+           <span>公司介绍</span>
+       </p>
+       <p style="padding-bottom:30px;">Copyright @ 2014-2015 河南商宇科技有限公司  豫ICP备09017896号-1</p>
+  </div>
+  <ul id="eject">
+      <li class="eject1">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject2">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject3">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject4">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject5">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject6">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject7">
+        <img src="img/ewm.png" />   
+      </li>
+      <li class="eject8">
+        <img src="img/ewm.png" />   
+      </li>
+ </ul>
+  
+
+</body>
+</html>

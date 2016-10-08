@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>河南商宇科技</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(function () {
+            var  url='http://dev-api.xue.xuegua.science';
+            $.get(url+'/jobs',function (data) {
+                var str='';
+                if(data.result){
+                    var jobs=data.data;
+                    for(key in jobs){
+                        if(key%2 == 0){
+                            str+='<li class="clear JoinLi">';
+                            str+='<div class="JoinDiv">';
+                            str+='<h4>'+jobs[key].name+'</h4>';
+                            str+='<p>岗位要求：</p>';
+                            str+='<ul>';
+                            var req=JSON.parse(jobs[key].requirement);
+                            for(var i in req){
+                                str+='<li>'+req[i]+'</li>';
+                            }
+                            str+='</ul>';
+                            str+='<p>岗位职责：</p>';
+                            str+='<ul>';
+                            var res=JSON.parse(jobs[key].responsibility);
+                            for(var j in res){
+                                str+='<li>'+res[j]+'</li>';
+                            }
+                            str+='</ul>';
+                            str+='</div>';
+                            str+='<div class="JoinP"><img src="http://'+jobs[key].img_url+'" alt=""></div>';
+                            str+='</li>';
+                        }else{
+                            str+='<li class="JoinLi clear">';
+                            str+='<div class="JoinPL"><img src="http://'+jobs[key].img_url+'" alt=""></div>';
+                            str+='<div class="JoinDivR">';
+                            str+='<h4>'+jobs[key].name+'</h4>';
+                            str+='<p>岗位职责:</p>';
+                            str+='<ul>';
+                            var req=JSON.parse(jobs[key].requirement);
+                            for(var i in req){
+                                str+='<li>'+req[i]+'</li>';
+                            }
+                            str+='</ul>';
+                            str+='<p>任职要求：</p>';
+                            str+='<ul>';
+                            var res=JSON.parse(jobs[key].responsibility);
+                            for(var j in res){
+                                str+='<li>'+res[j]+'</li>';
+                            }
+                            str+='</ul>';
+                            str+='</div>';
+                            str+='</li>';
+                        }
+
+                    }
+                    $('#job').html(str);
+                }
+
+
+            });
+
+            
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="top">
+        <div class="content1">
+            <img src="img/logo.png"/>
+            <ul class="nav">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="solution.html">解决方案</a></li>
+                <li><a href="case.html">成功案例</a></li>
+                <li><a href="recruit.html" class="Aactive">诚聘英才</a></li>
+                <li><a href="about.html">公司介绍</a></li>
+            </ul>
+            <ul class="navR">
+                <li class="navService">服务热线：</li>
+                <li class="navPhone">0371-56750099</li>
+            </ul>
+        </div>
+    </div>
+    <div class="top_img"><img src="img/people-banner.jpg" width="100%" height="500px"/></div>
+    <div class="content">
+          <p class="reMail">应聘简历投递邮箱：hr@hnshangyu.cn</p>
+          <ul class="JoinUl" id="job"></ul>
+    </div>
+  <div class="footer">
+       <div class="content clear">
+            <div class="footerL">
+                <h1>联系我们</h1>
+                <p>
+                   <img src="img/tel.png" style="position:relative; top:5px;"/>
+                   <span>电话：0371-56750099</span>
+                </p>
+                <p>
+                   <img src="img/mail.png" style="position:relative; top:5px;"/>
+                   <span>邮箱：shangyukeji@126.com</span>
+                </p>
+                <p>
+                   <img src="img/address.png"/>
+                   <span>地址：河南省郑州市金水区经三路32号财富广场5号楼16层A户</span>
+                </p>
+            </div>
+            <div class="footerR">
+                <h1>关于我们</h1>
+                <div class="wei">
+                    <p>
+                       <img src="img/weibo.png"/>
+                       <span>商宇科技</span>
+                    </p>
+                    <p>
+                       <img src="img/wechat.png"/>
+                       <span>扫描立即加入我们</span>
+                    </p>
+                </div>
+                <div class="yanzm">
+                     <img src="img/ewm.png" style="margin-right:26px;"/>
+                     <img src="img/ewm.png"/>
+                </div>
+            </div>
+       </div> 
+  </div>
+  <div class="foot">
+       <p>
+           <span>首页</span>
+           <span>解决方案</span>
+           <span>成功案例</span>
+           <span>诚聘英才</span>
+           <span>公司介绍</span>
+       </p>
+       <p style="padding-bottom:30px;">Copyright @ 2014-2015 河南商宇科技有限公司  豫ICP备09017896号-1</p>
+  </div>
+
+  
+
+</body>
+</html>
